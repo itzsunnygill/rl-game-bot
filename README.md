@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # RL Game Bot 🤖🎮
 
 > A Reinforcement Learning agent trained to play games — starting from zero knowledge and learning purely through trial, error, and reward.
@@ -177,3 +178,6 @@ Building an RL Game Bot from scratch as a college ML project.
 ---
 
 *Built with curiosity, trial, error, and a lot of reward signals.*
+=======
+# rl-game-bot
+>>>>>>> bd6ce5b8920003c78468105a2afd2a5dafa80268
