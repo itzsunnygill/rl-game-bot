@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # RL Game Bot 🤖🎮
 
 > A Reinforcement Learning agent trained to play games — starting from zero knowledge and learning purely through trial, error, and reward.
@@ -14,6 +13,16 @@
 | Strategy | Random actions | Learned optimal policy |
 
 > Bot scores the **maximum possible score** on every single episode.
+
+---
+
+## Pong Results
+
+![Pong Results](pong_results.png)
+
+Trained PPO bot on Pong for 1M steps using CNN + frame stacking.
+Best episode score: -11 (started from -21, improvement of 10 points).
+Full training requires ~10M steps for a winning agent.
 
 ---
 
@@ -39,6 +48,7 @@ rl-game-bot/
 │
 ├── train.py                # Train PPO agent on CartPole
 ├── evaluate.py             # Watch trained bot play
+├── evaluate_pong.py        # Evaluate trained bot on Pong
 ├── plot_results.py         # Plot bot scores across episodes
 ├── compare.py              # Compare trained vs random agent
 ├── verify.py               # Verify full environment setup
@@ -46,6 +56,7 @@ rl-game-bot/
 │
 ├── results.png             # Score graph (20 episodes)
 ├── comparison.png          # Trained vs Random comparison
+├── pong_results.png        # Pong score graph (10 episodes)
 └── README.md
 ```
 
@@ -149,7 +160,7 @@ After 50,000 training steps, the agent learns a near-perfect policy that scores 
 
 - [x] **Phase 1** — Environment setup and verification
 - [x] **Phase 2** — Train PPO bot on CartPole, evaluate and visualize results
-- [ ] **Phase 3** — Pixel-based games (Pong) with CNN + frame stacking
+- [x] **Phase 3** — Pixel-based games (Pong) with CNN + frame stacking
 - [ ] **Phase 4** — Compare DQN vs PPO, hyperparameter tuning
 - [ ] **Phase 5** — Streamlit web demo + final report
 
@@ -178,6 +189,3 @@ Building an RL Game Bot from scratch as a college ML project.
 ---
 
 *Built with curiosity, trial, error, and a lot of reward signals.*
-=======
-# rl-game-bot
->>>>>>> bd6ce5b8920003c78468105a2afd2a5dafa80268
