@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RL Bot — Setup Guide</title>
+  <meta name="description" content="Interactive setup guide for your Reinforcement Learning bot. Install libraries, verify your environment, and start training agents." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0d14;
+      --surface: #111520;
+      --surface2: #161b2a;
+      --border: #1e2640;
+      --border-glow: #3b4fd8;
+      --text: #e8ecf8;
+      --text-muted: #7c88b0;
+      --text-dim: #4a5580;
+      --accent: #5b6ef5;
+      --accent2: #7c3aed;
+      --accent3: #06b6d4;
+      --green: #10b981;
+      --yellow: #f59e0b;
+      --red: #ef4444;
+      --purple: #a78bfa;
+      --pink: #f472b6;
+      --grad1: linear-gradient(135deg, #5b6ef5 0%, #7c3aed 100%);
+      --grad2: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      --grad3: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ---- Background glow ---- */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(91,110,245,0.12) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      text-align: center;
+      margin-bottom: 52px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(91,110,245,0.12);
+      border: 1px solid rgba(91,110,245,0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .badge .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #e8ecf8 0%, #a5b4fc 60%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ---- Python version warning ---- */
+    .alert {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.25);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 36px;
+    }
+
+    .alert-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .alert-text { font-size: 14px; color: #fcd34d; line-height: 1.6; }
+    .alert-text strong { color: #fde68a; }
+    .alert-text code {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(245,158,11,0.15);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    /* ---- Tabs ---- */
+    .tabs-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(91,110,245,0.05), 0 32px 64px rgba(0,0,0,0.4);
+    }
+
+    .tab-nav {
+      display: flex;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      padding: 6px 6px 0;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 10px 10px 0 0;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+
+    .tab-btn.active {
+      color: var(--accent);
+      background: var(--surface);
+      font-weight: 600;
+    }
+
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0; right: 0;
+      height: 2px;
+      background: var(--grad1);
+      border-radius: 2px 2px 0 0;
+    }
+
+    .tab-icon { font-size: 16px; }
+
+    .tab-content { display: none; padding: 32px; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---- Library cards ---- */
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+
+    .lib-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .lib-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      transition: all 0.25s ease;
+      cursor: default;
+    }
+
+    .lib-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(91,110,245,0.1);
+    }
+
+    .lib-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .lib-emoji { font-size: 20px; }
+
+    .lib-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .lib-tag {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .lib-tag.core { background: rgba(91,110,245,0.15); color: var(--accent); border: 1px solid rgba(91,110,245,0.25); }
+    .lib-tag.extra { background: rgba(6,182,212,0.12); color: var(--accent3); border: 1px solid rgba(6,182,212,0.2); }
+    .lib-tag.optional { background: rgba(167,139,250,0.12); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); }
+
+    .lib-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+
+    /* ---- Install steps ---- */
+    .step {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 20px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 30px;
+      height: 30px;
+      background: var(--grad1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 2px;
+    }
+
+    .step-body { flex: 1; }
+
+    .step-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .step-note {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      line-height: 1.55;
+    }
+
+    .step-note a { color: var(--accent3); text-decoration: none; }
+    .step-note a:hover { text-decoration: underline; }
+
+    /* ---- Code block ---- */
+    .code-block {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .code-lang {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .copy-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(91,110,245,0.12);
+      border: 1px solid rgba(91,110,245,0.25);
+      border-radius: 7px;
+      padding: 5px 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(91,110,245,0.22);
+      border-color: rgba(91,110,245,0.45);
+    }
+
+    .copy-btn.copied {
+      background: rgba(16,185,129,0.12);
+      border-color: rgba(16,185,129,0.3);
+      color: var(--green);
+    }
+
+    .copy-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    pre {
+      padding: 16px 18px;
+      overflow-x: auto;
+      line-height: 1.7;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #c9d1d9;
+    }
+
+    .c-cmd  { color: #79c0ff; }
+    .c-pkg  { color: #ffa657; }
+    .c-flag { color: #d2a8ff; }
+    .c-cmt  { color: #6e7681; font-style: italic; }
+    .c-str  { color: #a5d6ff; }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 28px 0;
+    }
+
+    /* ---- Verify tab ---- */
+    .verify-intro {
+      background: rgba(6,182,212,0.07);
+      border: 1px solid rgba(6,182,212,0.2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      font-size: 13.5px;
+      color: #67e8f9;
+      line-height: 1.6;
+    }
+
+    .verify-intro strong { color: #a5f3fc; }
+
+    .check-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-size: 13.5px;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+    }
+
+    .check-item:hover { border-color: var(--border-glow); color: var(--text); }
+
+    .check-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .check-icon.ok { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+    .check-icon.warn { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
+
+    /* ---- Atari banner ---- */
+    .atari-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: rgba(167,139,250,0.07);
+      border: 1px solid rgba(167,139,250,0.2);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 20px;
+    }
+
+    .atari-banner .ab-icon { font-size: 22px; flex-shrink: 0; }
+    .atari-banner .ab-text { font-size: 13.5px; color: #c4b5fd; line-height: 1.6; }
+    .atari-banner .ab-text strong { color: #ddd6fe; }
+
+    /* ---- Footer ---- */
+    .footer {
+      text-align: center;
+      margin-top: 48px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .footer a { color: var(--text-muted); text-decoration: none; }
+    .footer a:hover { color: var(--text); }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 600px) {
+      .tab-nav { gap: 2px; }
+      .tab-btn { font-size: 12px; padding: 10px 8px; gap: 5px; }
+      .tab-content { padding: 20px 16px; }
+      .lib-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="badge"><span class="dot"></span>RL Bot Setup</div>
+    <h1>Get Your Environment<br>Ready to Train</h1>
+    <p class="subtitle">Everything you need to go from zero to training CartPole and Pong agents — step by step, with one-click copy commands.</p>
+  </header>
+
+  <!-- Python warning -->
+  <div class="alert" role="alert">
+    <span class="alert-icon">⚠️</span>
+    <p class="alert-text">
+      <strong>Requires Python 3.10+</strong> — Check your version first:
+      <code>python --version</code>. If you're on an older version, download the latest from
+      <strong>python.org</strong> before continuing.
+    </p>
+  </div>
+
+  <!-- Widget -->
+  <div class="tabs-wrapper" role="tablist">
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" id="tab-libraries" role="tab" aria-selected="true" aria-controls="panel-libraries" onclick="switchTab('libraries')">
+        <span class="tab-icon">📦</span> Libraries
+      </button>
+      <button class="tab-btn" id="tab-install" role="tab" aria-selected="false" aria-controls="panel-install" onclick="switchTab('install')">
+        <span class="tab-icon">⚙️</span> Install Commands
+      </button>
+      <button class="tab-btn" id="tab-verify" role="tab" aria-selected="false" aria-controls="panel-verify" onclick="switchTab('verify')">
+        <span class="tab-icon">✅</span> Verify Setup
+      </button>
+    </nav>
+
+    <!-- ═══════════ TAB 1: Libraries ═══════════ -->
+    <section class="tab-content active" id="panel-libraries" role="tabpanel" aria-labelledby="tab-libraries">
+      <p class="section-title">Core Libraries</p>
+      <div class="lib-grid">
+
+        <div class="lib-card">
+          <div class="lib-header">
+            <span class="lib-emoji">🤖</span>
+            <span class="lib-name">stable-baselines3</span>
+            <span class="lib-tag core">Core</span>
+          </div>
+          <p class="lib-desc">Pre-built RL algorithms (PPO, DQN, A2C, SAC). Train agents in one line — the backbone of this project.</p>
+        </div>
+
+        <div class="lib-card">
+          <div class="lib-header">
+            <span class="lib-emoji">🏋️</span>
+            <span class="lib-name">gymnasium</span>
+            <span class="lib-tag core">Core</span>
+          </div>
+          <p class="lib-desc">OpenAI's environment toolkit. Provides CartPole, Pong, LunarLander, and 100+ training environments.</p>
+        </div>
+
+        <div class="lib-card">
+          <div class="lib-header">
+            <span class="lib-emoji">🔥</span>
+            <span class="lib-name">torch (PyTorch)</span>
+            <span class="lib-tag core">Core</span>
+          </div>
+          <p class="lib-desc">The deep learning engine powering all neural networks. Required by stable-baselines3 under the hood.</p>
+        </div>
+
+        <div class="lib-card">
+          <div class="lib-header">
+            <span class="lib-emoji">🔢</span>
+            <span class="lib-name">numpy</span>
+            <span class="lib-tag core">Core</span>
+          </div>
+          <p class="lib-desc">Fast numerical computing. Handles observations, rewards, and all array operations during training.</p>
+        </div>
+
+        <div class="lib-card">
+          <div class="lib-header">
+            <span class="lib-emoji">📊</span>
+            <span class="lib-name">matplotlib</span>
+            <span class="lib-tag extra">Extra</span>
+          </div>
+          <p class="lib-desc">Plot reward curves and visualize training progress over episodes to understand how your agent improves.</p>
+        </div>
+
+        <div class="lib-card">
+          <div class="lib-header">
+            <span class="lib-emoji">🕹️</span>
+            <span class="lib-name">ale-py + ROMs</span>
+            <span class="lib-tag extra">Extra</span>
+          </div>
+          <p class="lib-desc">Arcade Learning Environment for Atari games. Enables Pong, Breakout &amp; classic Atari training.</p>
+        </div>
+
+        <div class="lib-card">
+          <div class="lib-header">
+            <span class="lib-emoji">🖼️</span>
+            <span class="lib-name">opencv-python</span>
+            <span class="lib-tag optional">Optional</span>
+          </div>
+          <p class="lib-desc">Image preprocessing for pixel-based envs. Required when training directly from raw screen frames.</p>
+        </div>
+
+        <div class="lib-card">
+          <div class="lib-header">
+            <span class="lib-emoji">📈</span>
+            <span class="lib-name">tensorboard</span>
+            <span class="lib-tag optional">Optional</span>
+          </div>
+          <p class="lib-desc">Real-time training dashboard. Visualize loss, entropy, and reward metrics live while your agent trains.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════ TAB 2: Install Commands ═══════════ -->
+    <section class="tab-content" id="panel-install" role="tabpanel" aria-labelledby="tab-install">
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <p class="step-label">Upgrade pip</p>
+          <p class="step-note">Always upgrade pip first to avoid dependency resolver issues.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="copy-btn" id="copy-btn-1" onclick="copyCode('pip install --upgrade pip', 'copy-btn-1')" aria-label="Copy command">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy
+              </button>
+            </div>
+            <pre><code><span class="c-cmd">pip</span> install <span class="c-flag">--upgrade</span> <span class="c-pkg">pip</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <p class="step-label">Install PyTorch</p>
+          <p class="step-note">
+            On Windows, use <a href="https://pytorch.org/get-started/locally/" target="_blank" rel="noopener">pytorch.org</a> to get the exact command for your CUDA version. CPU-only fallback shown below.
+          </p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="copy-btn" id="copy-btn-2" onclick="copyCode('pip install torch torchvision torchaudio', 'copy-btn-2')" aria-label="Copy command">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy
+              </button>
+            </div>
+            <pre><code><span class="c-cmd">pip</span> install <span class="c-pkg">torch torchvision torchaudio</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <p class="step-label">Install Gymnasium + Stable-Baselines3</p>
+          <p class="step-note">The core RL stack — environments and pre-built algorithms.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="copy-btn" id="copy-btn-3" onclick="copyCode('pip install gymnasium stable-baselines3[extra]', 'copy-btn-3')" aria-label="Copy command">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2v1"/></svg>
+                Copy
+              </button>
+            </div>
+            <pre><code><span class="c-cmd">pip</span> install <span class="c-pkg">gymnasium</span> <span class="c-pkg">stable-baselines3</span><span class="c-flag">[extra]</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <p class="step-label">Install Atari support (for Pong)</p>
+          <p class="step-note">Install ale-py, then download the actual game ROMs legally via AutoROM.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="copy-btn" id="copy-btn-4" onclick="copyCode('pip install ale-py gymnasium[atari] autorom[accept-rom-license]', 'copy-btn-4')" aria-label="Copy command">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy
+              </button>
+            </div>
+            <pre><code><span class="c-cmd">pip</span> install <span class="c-pkg">ale-py</span> <span class="c-pkg">gymnasium</span><span class="c-flag">[atari]</span> <span class="c-pkg">autorom</span><span class="c-flag">[accept-rom-license]</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <p class="step-label">Run AutoROM to download game ROMs</p>
+          <p class="step-note">This step is mandatory for Atari games. Skip it and Pong won't load.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="copy-btn" id="copy-btn-5" onclick="copyCode('AutoROM --accept-license', 'copy-btn-5')" aria-label="Copy command">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy
+              </button>
+            </div>
+            <pre><code><span class="c-cmd">AutoROM</span> <span class="c-flag">--accept-license</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <p class="step-label">Install optional extras</p>
+          <p class="step-note">Plotting, image preprocessing, and TensorBoard for training dashboards.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">bash</span>
+              <button class="copy-btn" id="copy-btn-6" onclick="copyCode('pip install matplotlib opencv-python tensorboard', 'copy-btn-6')" aria-label="Copy command">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy
+              </button>
+            </div>
+            <pre><code><span class="c-cmd">pip</span> install <span class="c-pkg">matplotlib</span> <span class="c-pkg">opencv-python</span> <span class="c-pkg">tensorboard</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ═══════════ TAB 3: Verify Setup ═══════════ -->
+    <section class="tab-content" id="panel-verify" role="tabpanel" aria-labelledby="tab-verify">
+
+      <div class="verify-intro">
+        Run the script below in your terminal. If CartPole prints <strong>"Setup works!"</strong>, your environment is ready to go. 🎉
+      </div>
+
+      <p class="section-title">Quick Verification Checklist</p>
+      <ul class="check-list">
+        <li class="check-item"><span class="check-icon ok">✓</span> Python 3.10 or higher installed</li>
+        <li class="check-item"><span class="check-icon ok">✓</span> PyTorch imports without error</li>
+        <li class="check-item"><span class="check-icon ok">✓</span> Gymnasium creates CartPole-v1</li>
+        <li class="check-item"><span class="check-icon ok">✓</span> Stable-Baselines3 imports PPO</li>
+        <li class="check-item"><span class="check-icon warn">!</span> Atari ROMs installed (only needed for Pong)</li>
+      </ul>
+
+      <p class="section-title">Verification Script — Save as <code style="color:var(--accent3);font-family:'JetBrains Mono',monospace;font-size:12px;">verify.py</code> and run it</p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">python</span>
+          <button class="copy-btn" id="copy-btn-py" onclick="copyCode(verifyScript, 'copy-btn-py')" aria-label="Copy verification script">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy script
+          </button>
+        </div>
+        <pre><code><span class="c-cmt"># verify.py — Run this to confirm everything is installed</span>
+
+<span class="c-cmd">import</span> sys
+
+<span class="c-cmt"># 1. Check Python version</span>
+assert sys.version_info &gt;= (3, 10), <span class="c-str">"Python 3.10+ required"</span>
+<span class="c-cmd">print</span>(<span class="c-str">f"✅ Python {sys.version_info.major}.{sys.version_info.minor}"</span>)
+
+<span class="c-cmt"># 2. Check PyTorch</span>
+<span class="c-cmd">import</span> torch
+<span class="c-cmd">print</span>(<span class="c-str">f"✅ PyTorch {torch.__version__} | CUDA: {torch.cuda.is_available()}"</span>)
+
+<span class="c-cmt"># 3. Check Gymnasium + CartPole</span>
+<span class="c-cmd">import</span> gymnasium <span class="c-cmd">as</span> gym
+env = gym.make(<span class="c-str">"CartPole-v1"</span>)
+obs, _ = env.reset()
+env.close()
+<span class="c-cmd">print</span>(<span class="c-str">"✅ Gymnasium — CartPole-v1 loaded"</span>)
+
+<span class="c-cmt"># 4. Check Stable-Baselines3</span>
+<span class="c-cmd">from</span> stable_baselines3 <span class="c-cmd">import</span> PPO
+<span class="c-cmd">print</span>(<span class="c-str">"✅ Stable-Baselines3 — PPO imported"</span>)
+
+<span class="c-cmt"># 5. Quick agent test</span>
+env = gym.make(<span class="c-str">"CartPole-v1"</span>)
+model = PPO(<span class="c-str">"MlpPolicy"</span>, env, verbose=<span class="c-pkg">0</span>)
+model.learn(total_timesteps=<span class="c-pkg">1000</span>)
+env.close()
+<span class="c-cmd">print</span>(<span class="c-str">"✅ PPO trained on CartPole for 1000 steps"</span>)
+
+<span class="c-cmd">print</span>(<span class="c-str">"\n🎉 Setup works! You're ready to train RL agents."</span>)</code></pre>
+      </div>
+
+      <p class="section-title" style="margin-top:24px;">Run the script</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" id="copy-btn-run" onclick="copyCode('python verify.py', 'copy-btn-run')" aria-label="Copy run command">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre><code><span class="c-cmd">python</span> verify.py</code></pre>
+      </div>
+
+      <div class="atari-banner">
+        <span class="ab-icon">🕹️</span>
+        <p class="ab-text">
+          <strong>Testing Pong / Atari?</strong> After Steps 4 &amp; 5 above, test with:<br>
+          <code style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#e9d5ff;">python -c "import gymnasium as gym; env = gym.make('ALE/Pong-v5'); print('Pong OK')"</code>
+        </p>
+      </div>
+
+    </section>
+
+  </div><!-- /.tabs-wrapper -->
+
+  <footer class="footer">
+    <p>RL Bot Setup Guide &bull; <a href="https://stable-baselines3.readthedocs.io" target="_blank" rel="noopener">SB3 Docs</a> &bull; <a href="https://gymnasium.farama.org" target="_blank" rel="noopener">Gymnasium Docs</a> &bull; <a href="https://pytorch.org/get-started/locally/" target="_blank" rel="noopener">PyTorch Install</a></p>
+  </footer>
+
+</div><!-- /.container -->
+
+<script>
+  // ── Tab Switching ──────────────────────────────────
+  function switchTab(id) {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.tab-content').forEach(panel => {
+      panel.classList.remove('active');
+    });
+    document.getElementById('tab-' + id).classList.add('active');
+    document.getElementById('tab-' + id).setAttribute('aria-selected', 'true');
+    document.getElementById('panel-' + id).classList.add('active');
+  }
+
+  // ── Copy to Clipboard ──────────────────────────────
+  const SVG_COPY = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+  const SVG_CHECK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`;
+
+  function copyCode(text, btnId) {
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById(btnId);
+      btn.classList.add('copied');
+      btn.innerHTML = SVG_CHECK + ' Copied!';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = SVG_COPY + (btnId === 'copy-btn-py' ? ' Copy script' : ' Copy');
+      }, 2000);
+    });
+  }
+
+  // ── Verify script text (for copy) ─────────────────
+  const verifyScript = `# verify.py — Run this to confirm everything is installed
+import sys
+
+# 1. Check Python version
+assert sys.version_info >= (3, 10), "Python 3.10+ required"
+print(f"✅ Python {sys.version_info.major}.{sys.version_info.minor}")
+
+# 2. Check PyTorch
+import torch
+print(f"✅ PyTorch {torch.__version__} | CUDA: {torch.cuda.is_available()}")
+
+# 3. Check Gymnasium + CartPole
+import gymnasium as gym
+env = gym.make("CartPole-v1")
+obs, _ = env.reset()
+env.close()
+print("✅ Gymnasium — CartPole-v1 loaded")
+
+# 4. Check Stable-Baselines3
+from stable_baselines3 import PPO
+print("✅ Stable-Baselines3 — PPO imported")
+
+# 5. Quick agent test
+env = gym.make("CartPole-v1")
+model = PPO("MlpPolicy", env, verbose=0)
+model.learn(total_timesteps=1000)
+env.close()
+print("✅ PPO trained on CartPole for 1000 steps")
+
+print("\\n🎉 Setup works! You're ready to train RL agents.")`;
+</script>
+
+</body>
+</html>
