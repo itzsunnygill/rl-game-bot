@@ -6,11 +6,11 @@
 
 ## Results So Far
 
-| Metric | Random Agent | Trained PPO Bot |
-|---|---|---|
-| Average Score | ~20–30 | **500 / 500** |
-| Consistency | Unstable | Perfect (20/20 episodes) |
-| Strategy | Random actions | Learned optimal policy |
+| Metric | Random | DQN (scratch) | PPO |
+|---|---|---|---|
+| Average Score | 21 | 175 | 500/500 |
+| Consistency | Unstable | Partially stable | Perfect |
+| Built with | — | PyTorch | Stable-Baselines3 |
 
 > Bot scores the **maximum possible score** on every single episode.
 
@@ -23,6 +23,36 @@
 Trained PPO bot on Pong for 1M steps using CNN + frame stacking.
 Best episode score: -11 (started from -21, improvement of 10 points).
 Full training requires ~10M steps for a winning agent.
+
+---
+
+## DQN From Scratch
+
+Built a complete DQN implementation from scratch using PyTorch:
+
+- `agent/dqn.py` — Neural network (MLP with 2 hidden layers)
+- `agent/replay_buffer.py` — Experience replay memory (50k capacity)
+- `agent/agent.py` — Epsilon-greedy + Target network + Training loop
+
+![DQN Results](dqn_results.png)
+
+DQN learned to solve CartPole from zero — average score of 175 over 50 episodes.
+Showed classic instability pattern — a known DQN limitation addressed by PPO.
+
+---
+
+## Algorithm Comparison
+
+![Algorithm Comparison](algorithm_comparison.png)
+
+| Algorithm | Type | Avg Score | Built By |
+|---|---|---|---|
+| Random Agent | No learning | 21 | Baseline |
+| DQN | From scratch | 175 | PyTorch |
+| PPO | Pre-built | 500 | Stable-Baselines3 |
+
+> PPO outperformed DQN due to its clipping mechanism which prevents
+> destructive policy updates — making it significantly more stable.
 
 ---
 
@@ -158,11 +188,11 @@ After 50,000 training steps, the agent learns a near-perfect policy that scores 
 
 ## Roadmap
 
-- [x] **Phase 1** — Environment setup and verification
-- [x] **Phase 2** — Train PPO bot on CartPole, evaluate and visualize results
-- [x] **Phase 3** — Pixel-based games (Pong) with CNN + frame stacking
-- [ ] **Phase 4** — Compare DQN vs PPO, hyperparameter tuning
-- [ ] **Phase 5** — Streamlit web demo + final report
+- [x] Phase 1 — Environment setup
+- [x] Phase 2 — PPO CartPole bot
+- [x] Phase 3 — Pong with CNN on GPU
+- [x] Phase 4 — DQN from scratch + comparison
+- [ ] Phase 5 — Streamlit demo + final report
 
 ---
 
