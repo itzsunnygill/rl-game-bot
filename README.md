@@ -120,12 +120,19 @@ rl-game-bot/
 ├── evaluate_pong.py        # Evaluate trained bot on Pong
 ├── plot_results.py         # Plot bot scores across episodes
 ├── compare.py              # Compare trained vs random agent
+├── compare_algorithms.py   # DQN vs PPO vs Random
+├── train_dqn.py            # Train DQN from scratch
+├── app.py                  # Streamlit live demo
+├── results.ipynb           # Jupyter results notebook
 ├── verify.py               # Verify full environment setup
 ├── tezt.py                 # Quick CartPole sanity check
 │
 ├── results.png             # Score graph (20 episodes)
 ├── comparison.png          # Trained vs Random comparison
 ├── pong_results.png        # Pong score graph (10 episodes)
+├── dqn_results.png         # DQN training curve
+├── algorithm_comparison.png # Algorithm comparison
+├── demo_screenshot.png     # Streamlit demo screenshot
 └── README.md
 ```
 
@@ -224,6 +231,7 @@ After 50,000 training steps, the agent learns a near-perfect policy that scores 
 | `Matplotlib` | Reward curve visualization |
 | `TensorBoard` | Training metrics logging |
 | `OpenCV` | Frame preprocessing (Phase 3) |
+| `Streamlit` | Live web demo |
 
 ---
 
@@ -238,8 +246,9 @@ After 50,000 training steps, the agent learns a near-perfect policy that scores 
 ---
 
 ## What's Next
-
-Training on **Pong** using raw pixel input — the agent will learn to play from screen frames using a Convolutional Neural Network, just like DeepMind's original DQN paper.
+- Train Pong for 10M steps for a winning agent
+- Implement A3C algorithm for comparison
+- Deploy DQN bot to web interface
 
 ---
 
