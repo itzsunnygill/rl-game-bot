@@ -209,6 +209,27 @@ After 50,000 training steps, the agent learns a near-perfect policy that scores 
 
 ---
 
+## Live Demo
+
+Built with Streamlit — select algorithm, run episodes, see live scores!
+
+![Streamlit Demo](demo_screenshot.png)
+
+### Run the demo locally
+
+```bash
+python -m streamlit run app.py
+```
+
+| Feature | Description |
+|---|---|
+| Algorithm selector | Choose PPO, DQN or Random |
+| Episode slider | Run 1-20 episodes |
+| Live progress bar | Watch it run in real time |
+| Score metrics | Average, Best, Worst scores |
+
+---
+
 ## Tech Stack
 
 | Tool | Purpose |
