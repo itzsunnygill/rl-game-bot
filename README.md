@@ -56,6 +56,43 @@ Showed classic instability pattern — a known DQN limitation addressed by PPO.
 
 ---
 
+## Live Demo
+
+Built with Streamlit — select algorithm, run episodes, see live scores!
+
+![Streamlit Demo](demo_screenshot.png)
+
+### Run the demo locally
+```bash
+python -m streamlit run app.py
+```
+
+| Feature | Description |
+|---|---|
+| Algorithm selector | Choose PPO, DQN or Random |
+| Episode slider | Run 1-20 episodes |
+| Live progress bar | Watch it run in real time |
+| Score metrics | Average, Best, Worst scores |
+| Result graphs | Bar chart of episode scores |
+
+---
+
+## File Overview
+
+| File | Purpose |
+|---|---|
+| `train.py` | Train PPO on CartPole |
+| `train_dqn.py` | Train DQN from scratch |
+| `evaluate.py` | Evaluate CartPole PPO bot |
+| `evaluate_pong.py` | Evaluate Pong PPO bot |
+| `compare.py` | Trained vs random comparison |
+| `compare_algorithms.py` | DQN vs PPO vs Random |
+| `plot_results.py` | Plot score graphs |
+| `app.py` | Streamlit live demo |
+| `verify.py` | Verify environment setup |
+
+---
+
 ## Demo
 
 ![Comparison Graph](comparison.png)
@@ -192,7 +229,7 @@ After 50,000 training steps, the agent learns a near-perfect policy that scores 
 - [x] Phase 2 — PPO CartPole bot
 - [x] Phase 3 — Pong with CNN on GPU
 - [x] Phase 4 — DQN from scratch + comparison
-- [ ] Phase 5 — Streamlit demo + final report
+- [x] Phase 5 — Streamlit live demo
 
 ---
 
