@@ -56,7 +56,9 @@ Showed classic instability pattern — a known DQN limitation addressed by PPO.
 
 ---
 
-## Live Demo
+## 🌐 Live Demo
+
+👉 [Try the live demo here](https://rl-game-bot-7uhczw2v8iqfwhv445ovnn.streamlit.app)
 
 Built with Streamlit — select algorithm, run episodes, see live scores!
 
@@ -207,26 +209,7 @@ The agent starts with zero knowledge and learns entirely through interaction wit
 
 After 50,000 training steps, the agent learns a near-perfect policy that scores the maximum possible reward every episode.
 
----
 
-## Live Demo
-
-Built with Streamlit — select algorithm, run episodes, see live scores!
-
-![Streamlit Demo](demo_screenshot.png)
-
-### Run the demo locally
-
-```bash
-python -m streamlit run app.py
-```
-
-| Feature | Description |
-|---|---|
-| Algorithm selector | Choose PPO, DQN or Random |
-| Episode slider | Run 1-20 episodes |
-| Live progress bar | Watch it run in real time |
-| Score metrics | Average, Best, Worst scores |
 
 ---
 
